@@ -198,7 +198,7 @@ def _create_or_edit(entry, template):
     if request.method == 'POST':
         entry.title = request.form.get('title') or ''
         entry.content = request.form.get('content') or ''
-        entry.published = request.form.get('published') or False
+        entry.published = True
         if result(entry.content)>=50.0:
             flash('The Comment is inappropriate to put.', 'danger')
         elif not (entry.title and entry.content):

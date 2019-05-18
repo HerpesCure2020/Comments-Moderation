@@ -12,7 +12,7 @@
 
 {% block content %}
   {% for entry in object_list %}
-    <h3> Comment by: 
+    <h3> Comment by:
       <a href="{% if entry.published %}{{ url_for('detail', slug=entry.slug) }}{% else %}{{ url_for('edit', slug=entry.slug) }}{% endif %}">
         {{ entry.title }}
       </a>

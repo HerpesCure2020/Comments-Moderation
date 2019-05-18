@@ -15,7 +15,9 @@ from peewee import *
 from playhouse.flask_utils import FlaskDB, get_object_or_404, object_list
 from playhouse.sqlite_ext import *
 
-from test import result
+# from test import result
+
+from backend_api import predict_score as result
 
 # Blog configuration values.
 
@@ -197,7 +199,7 @@ def _create_or_edit(entry, template):
         entry.title = request.form.get('title') or ''
         entry.content = request.form.get('content') or ''
         entry.published = request.form.get('published') or False
-        if result(entry.content)==50:
+        if result(entry.content)>=50.0:
             flash('The Comment is inappropriate to put.', 'danger')
         elif not (entry.title and entry.content):
             flash('Title and Content are required.', 'danger')

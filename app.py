@@ -203,10 +203,11 @@ def _create_or_edit(entry, template):
         entry.content = request.form.get('content') or ''
         entry.published = True
         output = weight(entry.content)[0][1]
-        if result(entry.content)>=50.0:
+        value = result(entry.content)
+        if value>=0.501:
             flash('The Comment is inappropriate to put.', 'danger')
-        elif not (entry.title and entry.content):
-            flash('Title and Content are required.', 'danger')
+        # elif not (entry.title and entry.content):
+        #     flash('Title and Content are required.', 'danger')
         else:
             # Wrap the call to save in a transaction so we can roll it back
             # cleanly in the event of an integrity error.
@@ -215,9 +216,8 @@ def _create_or_edit(entry, template):
                     entry.save()
             except IntegrityError:
                 flash('Error: this title is already in use.', 'danger')
-            else:
-                flash('Entry saved successfully.', 'success')
-                return redirect(url_for('detail', slug=entry.slug))
+            flash('Entry saved successfully.', 'success')
+            return redirect(url_for('detail', slug=entry.slug))
 
     return render_template(template, entry=entry, output=output)
 

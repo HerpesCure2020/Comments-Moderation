@@ -30,11 +30,11 @@ for word in test_sequence.split(" "):
    except:
        x = 1
        #print("lassan")
-           
+
 pads = []
 for i in ids:
     pads.append(sequence.pad_sequences([i], maxlen=max_sequence_length))
-    
+
 scores = []
 for p in pads:
     scores.append(model.predict(np.array([p][0]))[0][0])
@@ -55,11 +55,11 @@ for s in scores:
     if (check(save[i]) != -1):
         continue
     s_dict[s] = save[i]
-    
+
 
 ans = sorted(s_dict.items(),reverse=True)
 
-print(ans)
+return pred_score, ans
 
 #print(scores)
  # gives score percentage

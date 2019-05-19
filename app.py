@@ -19,6 +19,8 @@ from playhouse.sqlite_ext import *
 
 from backend_api import predict_score as result
 
+from words_api import predict_score as weight
+
 # Blog configuration values.
 
 # You may consider using a one-way hash to generate the password, and then
@@ -195,10 +197,12 @@ def index():
         check_bounds=False)
 
 def _create_or_edit(entry, template):
+    output = ""
     if request.method == 'POST':
         entry.title = request.form.get('title') or ''
         entry.content = request.form.get('content') or ''
         entry.published = True
+        output = weight(entry.content)[0][1]
         if result(entry.content)>=50.0:
             flash('The Comment is inappropriate to put.', 'danger')
         elif not (entry.title and entry.content):
@@ -215,7 +219,7 @@ def _create_or_edit(entry, template):
                 flash('Entry saved successfully.', 'success')
                 return redirect(url_for('detail', slug=entry.slug))
 
-    return render_template(template, entry=entry)
+    return render_template(template, entry=entry, output=output)
 
 @app.route('/create/', methods=['GET', 'POST'])
 @login_required
@@ -236,6 +240,7 @@ def detail(slug):
         query = Entry.public()
     entry = get_object_or_404(query, Entry.slug == slug)
     return render_template('detail.html', entry=entry)
+
 
 @app.route('/<slug>/edit/', methods=['GET', 'POST'])
 @login_required

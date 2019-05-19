@@ -1,0 +1,8 @@
+flask
+markdown
+micawber
+peewee
+playhouse
+keras
+numpy
+sklearn
